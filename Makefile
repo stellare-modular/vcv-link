@@ -1,6 +1,6 @@
 
 
-FLAGS += -Ilink/include -Ilink/modules/asio-standalone/asio/include
+FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include
 
 ifeq ($(OS),Windows_NT)
     CCFLAGS += -DLINK_PLATFORM_WINDOWS=1
