@@ -91,7 +91,7 @@ void Link::step()
     if (tick < 0)
         tick += ticks_per_bar;
 
-    if (m_lastTick != tick)
+    if ((m_lastTick != tick) || !m_synced)
     {
         if (tick == 0)
             m_synced = true;
