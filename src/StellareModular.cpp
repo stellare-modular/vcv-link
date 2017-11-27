@@ -25,7 +25,7 @@ Plugin* plugin;
 void init(rack::Plugin* p)
 {
     plugin = p;
-    p->slug = "StellareModular";
+    p->slug = "StellareModular-Link";
 
 #ifdef VERSION
     p->version = TOSTRING(VERSION);
