@@ -34,7 +34,7 @@ clone_folder: c:\vcv-link-build\vcv-link
 before_build:
   - cd c:\vcv-link-build
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
-  - msys64\usr\bin\bash -lc "pacman -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
+  - bash -lc "pacman -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
 
 install:
   - cinst make --yes
