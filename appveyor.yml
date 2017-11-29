@@ -28,11 +28,11 @@ environment:
       MSYSTEM: MINGW64
 
 # Clone directory
-clone_folder: c:\vcv-link-build\vcv-link
+clone_folder: /vcv-link-build/vcv-link
 
 # Scripts that are called at very beginning, before repo cloning
 before_build:
-  - cd c:\vcv-link-build
+  - cd /vcv-link-build
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
   - cd vcv-rack
   - git checkout v0.5
@@ -54,5 +54,5 @@ configuration: Release
 
 build_script:
   - xcopy c:\vcv-link-build\vcv-link c:\vcv-link-build\vcv-rack\plugins\vcv-link /s /h /e /k /f /c /i
-  - cd c:\vcv-link-build\vcv-rack\plugins\vcv-link
+  - cd /vcv-link-build/vcv-rack/plugins/vcv-link
   - make
