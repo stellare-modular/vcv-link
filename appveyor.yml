@@ -26,6 +26,11 @@ environment:
       MSYS2_ARCH: x86_64
       MSYS2_DIR: msys64
       MSYSTEM: MINGW64
+    - compiler: msys2
+      ARCH: x86
+      MSYS2_ARCH: i686
+      MSYS2_DIR: msys64
+      MSYSTEM: MINGW32
 
 # Clone directory
 clone_folder: c:\vcv-link-build\vcv-link
@@ -34,10 +39,10 @@ clone_folder: c:\vcv-link-build\vcv-link
 before_build:
   - cd c:\vcv-link-build
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
-  - bash -lc "pacman -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
-
+  
 install:
-  - cinst make --yes
+  - bash -lc "pacman -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
+  #- cinst make --yes
 
 #-----------------------------#
 #     Build configuration     #
