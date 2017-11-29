@@ -54,6 +54,6 @@ platform: Any CPU
 configuration: Release
 
 build_script:
-  - xcopy c:\vcv-link-build\vcv-link c:\vcv-link-build\vcv-rack\plugins\vcv-link /s /h /e /k /f /c
+  - xcopy c:\vcv-link-build\vcv-link c:\vcv-link-build\vcv-rack\plugins\vcv-link /s /h /e /k /f /c /i
   - cd c:\vcv-link-build\vcv-rack\plugins\vcv-link
   - make
