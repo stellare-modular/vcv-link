@@ -30,6 +30,9 @@ before_build:
   - cd c:\vcv-link-build
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
 
+install:
+  - cinst make --yes
+
 #-----------------------------#
 #     Build configuration     #
 #-----------------------------#
