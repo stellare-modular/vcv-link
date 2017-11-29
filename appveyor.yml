@@ -41,6 +41,7 @@ before_build:
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
   
 install:
+  - PATH C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%
   - bash -lc "pacman -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
   #- cinst make --yes
 
