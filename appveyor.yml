@@ -32,7 +32,7 @@ clone_folder: c:\vcv-link-build\vcv-link
 
 # Scripts that are called at very beginning, before repo cloning
 before_build:
-  - cd c:\vcv-link-build
+  - cd "c:\vcv-link-build"
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
   - cd vcv-rack
   - git checkout v0.5.0
@@ -43,7 +43,6 @@ before_build:
 install:
   - PATH C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%
   - bash -lc "pacman --noconfirm --noprogressbar -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
-  #- cinst make --yes
 
 #-----------------------------#
 #     Build configuration     #
