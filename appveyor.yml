@@ -1,0 +1,42 @@
+#-----------------------------#
+#    General configuration    #
+#-----------------------------#
+
+# Version number
+version: 0.1.{build}-{branch}
+
+# Branches to build
+branches:
+  only:
+    - master
+    - develop
+    - feature/appveyor_integration
+
+# Maximum number of concurrent jobs
+max_jobs: 1
+
+#-----------------------------#
+#  Environment configuration  #
+#-----------------------------#
+
+# Build VM image
+image: Visual Studio 2015
+
+# Clone directory
+clone_folder: c:\vcv-link-build\vcv-link
+
+# Scripts that are called at very beginning, before repo cloning
+init:
+  - cd c:\vcv-link-build
+  - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
+
+#-----------------------------#
+#     Build configuration     #
+#-----------------------------#
+
+# Build platform and configuration
+platform: Any CPU
+configuration: Release
+
+build_script:
+  - make
