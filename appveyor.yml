@@ -32,6 +32,7 @@ clone_folder: c:\vcv-link-build\vcv-link
 
 # Scripts that are called at very beginning, before repo cloning
 before_build:
+  - set CHERE_INVOKING=1
   - cd c:\vcv-link-build
   - bash -lc "git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack"
   - cd vcv-rack
