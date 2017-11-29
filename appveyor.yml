@@ -41,7 +41,7 @@ before_build:
   - make
   
 install:
-  - set PATH=%PATH%;C:\msys64\usr\bin;C:\msys64\MINGW64\bin
+  - set PATH=%PATH%;C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin
   - bash -lc "pacman --noconfirm --noprogressbar -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
 
 #-----------------------------#
