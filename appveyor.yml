@@ -19,8 +19,13 @@ max_jobs: 1
 #  Environment configuration  #
 #-----------------------------#
 
-# Build VM image
-image: Visual Studio 2015
+environment:
+  matrix:
+    - compiler: msys2
+      ARCH: x64
+      MSYS2_ARCH: x86_64
+      MSYS2_DIR: msys64
+      MSYSTEM: MINGW64
 
 # Clone directory
 clone_folder: c:\vcv-link-build\vcv-link
@@ -29,6 +34,7 @@ clone_folder: c:\vcv-link-build\vcv-link
 before_build:
   - cd c:\vcv-link-build
   - git clone --recursive https://github.com/VCVRack/Rack.git vcv-rack
+  - pacman -S git make tar unzip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
 
 install:
   - cinst make --yes
@@ -42,4 +48,5 @@ platform: Any CPU
 configuration: Release
 
 build_script:
+  - cd c:\vcv-link-build\vcv-link
   - make
