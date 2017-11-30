@@ -3,11 +3,11 @@
 FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include
 
 ifeq ($(OS),Windows_NT)
-    CCFLAGS += -DLINK_PLATFORM_WINDOWS=1
+    CXXFLAGS += -DLINK_PLATFORM_WINDOWS=1
 else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
-        CCFLAGS += -DLINK_PLATFORM_LINUX=1
+        CXXFLAGS += -DLINK_PLATFORM_LINUX=1
     endif
     ifeq ($(UNAME_S),Darwin)
         CXXFLAGS += -DLINK_PLATFORM_MACOSX=1
