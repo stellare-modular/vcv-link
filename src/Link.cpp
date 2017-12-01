@@ -20,7 +20,7 @@
 
 #include "Link.hpp"
 
-#include <ableton/Link.hpp>
+#include <link-wrapper.h>
 
 struct Link : Module
 {
@@ -52,20 +52,20 @@ public:
         NUM_LIGHTS
 	};
 
-    Link() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS), m_link(120.0)
+    Link() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS)
     {
-        m_link.enable(true);
+		m_link = create_link_wrapper();
     }
 
     ~Link()
     {
-        m_link.enable(false);
+		delete_link_wrapper(m_link);
     }
 
     void step() override;
 
 private:
-    ableton::Link m_link;
+	link_handle* m_link;
     int m_lastTick = -1;
     bool m_synced = false;
 };
@@ -78,13 +78,12 @@ void Link::step()
     static const double beats_per_bar = 4.0;
     static const int ticks_per_bar = static_cast<int>(beats_per_bar / tick_length);
 
-    if (params[SYNC_PARAM].value == 1.0)
-        m_synced = false;
+	if (params[SYNC_PARAM].value == 1.0)
+	{
+		m_synced = false;
+	}
 
-    const auto time = m_link.clock().micros();
-    const auto timeline = m_link.captureAppTimeline();
-    const auto phase = timeline.phaseAtTime(time, beats_per_bar);
-
+	const double phase = get_link_phase(m_link, beats_per_bar);
     const double offset = params[OFFSET_PARAM].value * (5.0 * tick_length);
     int tick = static_cast<int>(std::floor((phase + offset) / tick_length));
 

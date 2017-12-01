@@ -1,9 +1,9 @@
 
-
-FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include
+FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include -Ilink-wrapper
 
 ifeq ($(OS),Windows_NT)
-    CXXFLAGS += -DLINK_PLATFORM_WINDOWS=1
+	# On Windows uses the wrapper DLL, needs to be build separately
+	LDFLAGS += -Lsrc -llink-wrapper
 else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
@@ -16,11 +16,15 @@ endif
 
 SOURCES = $(wildcard src/*.cpp)
 
+ifneq ($(OS),Windows_NT)
+	# On Mac and Windows directly compiles the wrapper
+	SOURCES += $(wildcard link-wrapper/*.cpp)
+endif
 
 include ../../plugin.mk
 
 
-DIST_NAME = Stellare
+DIST_NAME = VCV-Link
 dist: all
 ifndef VERSION
 	$(error VERSION must be defined when making distributables)
