@@ -18,7 +18,7 @@ SOURCES = $(wildcard src/*.cpp)
 
 ifneq ($(OS),Windows_NT)
 	# On Mac and Windows directly compiles the wrapper
-	SOURCES += modules$(wildcard modules/link-wrapper/*.cpp)
+	SOURCES += $(wildcard link-wrapper/*.cpp)
 endif
 
 include ../../plugin.mk
