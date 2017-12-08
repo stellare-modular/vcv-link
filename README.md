@@ -6,7 +6,7 @@ The link module is a very simple module which provides a 'link' connection with 
 ## Installation under Windows ##
 The Link module will not work out of the box on Windows due to the difference in build systems of VCV Rack and the Link Library. We provide you with a special DLL which needs to be copied manually to the folder where you installed VCV Rack. After extracting the archive, copy the link-wrapper.dll to the installation folder of VCV Rack(eg C:\Program Files\VCV\Rack). Then restart Rack and the Link module will show up under Stellare Modular.
 
-If the module still does not show up after executing the above steps then you probably need to install the Visual Studio 2015 Redistributable and the .NET Framework 4.71 or 4.72.
+If the module still does not show up after executing the above steps then you probably need to install the [Microsoft Visual C++ Redistributable for Visual Studio 2017](https://go.microsoft.com/fwlink/?LinkId=746572), if it still doesn't work please [create an issue](https://github.com/stellare-modular/vcv-link/issues) on this repository or get in touch via our [facebook page](https://www.facebook.com/stellaremodular).
 
 ![Link](./link.png)
 
