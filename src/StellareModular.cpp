@@ -24,12 +24,13 @@ Plugin* plugin;
 
 void init(rack::Plugin* p)
 {
+#ifndef VERSION
+    static_assert(false, "VERSION must be defined!");
+#endif
+
     plugin = p;
     p->slug = "StellareModular-Link";
-
-#ifdef VERSION
     p->version = TOSTRING(VERSION);
-#endif
 
     p->addModel(createModel<LinkWidget>("Stellare Modular", "Link", "Link", CLOCK_TAG));
 }
