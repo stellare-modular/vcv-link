@@ -20,7 +20,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "link-wrapper.h"
 
-#include <ableton/Link.hpp>
+#if LINK_PLATFORM_WINDOWS
+#include <stdint.h>
+#include <stdlib.h>
+#define htonll(x) _byteswap_uint64(x)
+#define ntohll(x) _byteswap_uint64(x)
+#endif
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-override"
+#include "ableton/link.hpp"
+#pragma GCC diagnostic pop
 
 extern "C" {
 
