@@ -15,7 +15,7 @@ endif
 
 ifeq ($(ARCH), win)
     CXXFLAGS += -DLINK_PLATFORM_WINDOWS=1
-	LDFLAGS += -L/c/Windows/System32 -lwsock32 -lws2_32 -liphlpapi
+	LDFLAGS += -lwsock32 -lws2_32 -liphlpapi
 endif
 
 SOURCES = $(wildcard src/*.cpp) $(wildcard link-wrapper/*.cpp)
