@@ -36,23 +36,15 @@ struct BlueSmallButton : SVGSwitch, MomentarySwitch
     }
 };
 
-struct SimpleKnobBlack : SVGKnob
+struct KnobSimpleWhite : SVGKnob
 {
-    SimpleKnobBlack()
+    KnobSimpleWhite()
     {
-        box.size = Vec(39.5, 39.5);
+        box.size = Vec(28, 28);
         minAngle = -0.82 * M_PI;
         maxAngle = 0.82 * M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/SimpleKnobBlack.svg")));
-    }
-};
-
-struct SimpleKnobBlackSmall : SimpleKnobBlack
-{
-	SimpleKnobBlackSmall()
-    {
-        box.size = Vec(30, 30);
+        setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
     }
 };
 

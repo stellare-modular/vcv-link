@@ -143,20 +143,20 @@ LinkWidget::LinkWidget()
 
     SVGPanel* panel = new SVGPanel();
     panel->box.size = box.size;
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/Link.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/LinkBlue.svg")));
     addChild(panel);
 
     addChild(createScrew<ScrewSilver>(Vec(23, 0)));
     addChild(createScrew<ScrewSilver>(Vec(23, 365)));
 
-    addParam(createParam<BlueSmallButton>(Vec(21, 74), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
-    addParam(createParam<SimpleKnobBlackSmall>(Vec(14.5, 115), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
-    addParam(createParam<SimpleKnobBlackSmall>(Vec(14.5, 155), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
+    addParam(createParam<BlueSmallButton>(Vec(22, 62), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
+    addParam(createParam<KnobSimpleWhite>(Vec(16, 114), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
+    addParam(createParam<KnobSimpleWhite>(Vec(16, 174), module, Link::SWING_PARAM, -1.0, 1.0, 0.0));
 
-    addOutput(createOutput<PJ301MPort>(Vec(18, 258), module, Link::CLOCK_OUTPUT));
-    addOutput(createOutput<PJ301MPort>(Vec(18.5, 302), module, Link::RESET_OUTPUT));
+    addOutput(createOutput<PJ301MPort>(Vec(17, 241), module, Link::CLOCK_OUTPUT));
+    addOutput(createOutput<PJ301MPort>(Vec(17, 297), module, Link::RESET_OUTPUT));
 
-    addChild(createLight<SmallLight<BlueLight>>(Vec(8, 267), module, Link::CLOCK_LIGHT));
-	addChild(createLight<SmallLight<YellowLight>>(Vec(8, 311), module, Link::RESET_LIGHT));
-    addChild(createLight<MediumLight<BlueLight>>(Vec(24.4, 77.4), module, Link::SYNC_LIGHT));
+    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 236), module, Link::CLOCK_LIGHT));
+    addChild(createLight<SmallLight<YellowLight>>(Vec(17, 292), module, Link::RESET_LIGHT));
+    addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 65.4), module, Link::SYNC_LIGHT));
 }
