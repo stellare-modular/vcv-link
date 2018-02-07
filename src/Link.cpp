@@ -151,7 +151,7 @@ LinkWidget::LinkWidget()
 
     addParam(createParam<BlueSmallButton>(Vec(22, 62), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
     addParam(createParam<KnobSimpleWhite>(Vec(16, 114), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 174), module, Link::SWING_PARAM, -1.0, 1.0, 0.0));
+    addParam(createParam<KnobSimpleWhite>(Vec(16, 174), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
 
     addOutput(createOutput<PJ301MPort>(Vec(17, 241), module, Link::CLOCK_OUTPUT));
     addOutput(createOutput<PJ301MPort>(Vec(17, 297), module, Link::RESET_OUTPUT));
