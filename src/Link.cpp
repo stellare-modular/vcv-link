@@ -21,6 +21,7 @@
 #include "Link.hpp"
 
 #include <link-wrapper.h>
+#include <iostream>
 
 struct Link : Module
 {
@@ -29,6 +30,7 @@ public:
     {
         SYNC_PARAM = 0,
         OFFSET_PARAM,
+        SWING_PARAM,
         NUM_PARAMS
     };
 
@@ -90,8 +92,19 @@ void Link::step()
     if (tick < 0)
         tick += ticks_per_bar;
 
+    if (((tick >> 3) % 2) == 1)
+    {
+        const double swing = params[SWING_PARAM].value * (2.0 * tick_length);
+        tick = static_cast<int>(std::floor((phase + offset - swing) / tick_length));
+    }
+
+    if (tick < 0)
+        tick += ticks_per_bar;
+
     if ((m_lastTick != tick) || !m_synced)
     {
+        //std::cout << tick << std::endl;
+
         if (tick == 0)
             m_synced = true;
 
@@ -138,6 +151,7 @@ LinkWidget::LinkWidget()
 
     addParam(createParam<BlueSmallButton>(Vec(21, 74), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
     addParam(createParam<SimpleKnobBlackSmall>(Vec(14.5, 115), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
+    addParam(createParam<SimpleKnobBlackSmall>(Vec(14.5, 155), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
 
     addOutput(createOutput<PJ301MPort>(Vec(18, 258), module, Link::CLOCK_OUTPUT));
     addOutput(createOutput<PJ301MPort>(Vec(18.5, 302), module, Link::RESET_OUTPUT));
