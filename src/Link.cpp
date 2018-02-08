@@ -1,21 +1,21 @@
 /*
- 
+
  VCV-Link by Stellare Modular
  Copyright (C) 2017 - Vincenzo Pietropaolo, Sander Baan
- 
+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 */
 
 #include "Link.hpp"
@@ -42,6 +42,7 @@ public:
 	enum OutputIds
     {
         CLOCK_OUTPUT = 0,
+				CLOCK_OUTPUT_2ND = 0,
 		RESET_OUTPUT,
 		NUM_OUTPUTS
 	};
@@ -49,6 +50,7 @@ public:
 	enum LightIds
     {
         CLOCK_LIGHT = 0,
+				CLOCK_LIGHT_2ND = 0,
         RESET_LIGHT,
         SYNC_LIGHT,
         NUM_LIGHTS
@@ -145,20 +147,22 @@ LinkWidget::LinkWidget()
 
     SVGPanel* panel = new SVGPanel();
     panel->box.size = box.size;
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/LinkBlue.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/Link.svg")));
     addChild(panel);
 
     addChild(createScrew<ScrewSilver>(Vec(23, 0)));
     addChild(createScrew<ScrewSilver>(Vec(23, 365)));
 
-    addParam(createParam<BlueSmallButton>(Vec(22, 62), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 114), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 174), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
+    addParam(createParam<BlueSmallButton>(Vec(22, 42), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
+    addParam(createParam<KnobSimpleWhite>(Vec(16, 93), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
+    addParam(createParam<KnobSimpleWhite>(Vec(16, 153), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
 
-    addOutput(createOutput<PJ301MPort>(Vec(17, 241), module, Link::CLOCK_OUTPUT));
-    addOutput(createOutput<PJ301MPort>(Vec(17, 297), module, Link::RESET_OUTPUT));
+    addOutput(createOutput<PJ301MPort>(Vec(17.5, 258), module, Link::CLOCK_OUTPUT));
+		addOutput(createOutput<PJ301MPort>(Vec(17.5, 212), module, Link::CLOCK_OUTPUT_2ND));
+    addOutput(createOutput<PJ301MPort>(Vec(17.5, 304), module, Link::RESET_OUTPUT));
 
-    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 236), module, Link::CLOCK_LIGHT));
-    addChild(createLight<SmallLight<YellowLight>>(Vec(17, 292), module, Link::RESET_LIGHT));
-    addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 65.4), module, Link::SYNC_LIGHT));
+    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT));
+		addChild(createLight<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
+    addChild(createLight<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
+    addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
 }
