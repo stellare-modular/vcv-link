@@ -94,7 +94,9 @@ void Link::step()
 
     if (((tick >> 3) % 2) == 1)
     {
-        const double swing = params[SWING_PARAM].value * (2.0 * tick_length);
+        const double max_swing_in_ticks = 2.0;
+
+        const double swing = params[SWING_PARAM].value * (max_swing_in_ticks * tick_length);
         tick = static_cast<int>(std::floor((phase + offset - swing) / tick_length));
     }
 
