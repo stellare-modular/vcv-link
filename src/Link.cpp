@@ -41,18 +41,18 @@ public:
 
 	enum OutputIds
     {
-        CLOCK_OUTPUT = 0,
-				CLOCK_OUTPUT_2ND = 0,
+        CLOCK_OUTPUT_4TH = 0,
 		RESET_OUTPUT,
+        CLOCK_OUTPUT_2ND,
 		NUM_OUTPUTS
 	};
 
 	enum LightIds
     {
-        CLOCK_LIGHT = 0,
-				CLOCK_LIGHT_2ND = 0,
+        CLOCK_LIGHT_4TH = 0,
         RESET_LIGHT,
         SYNC_LIGHT,
+        CLOCK_LIGHT_2ND,
         NUM_LIGHTS
 	};
 
@@ -116,8 +116,12 @@ void Link::step()
         {
             // 8 ticks per 4th of beat, clock has 50% PWM
             const bool clock_4th = ((tick % 8) < 4);
-            outputs[CLOCK_OUTPUT].value = (clock_4th ? 10.0 : 0.0);
-            lights[CLOCK_LIGHT].setBrightness(clock_4th ? 1.0 : 0.0);
+            outputs[CLOCK_OUTPUT_4TH].value = (clock_4th ? 10.0 : 0.0);
+            lights[CLOCK_LIGHT_4TH].setBrightness(clock_4th ? 1.0 : 0.0);
+
+            const bool clock_2nd = ((tick % 16) < 8);
+            outputs[CLOCK_OUTPUT_2ND].value = (clock_2nd ? 10.0 : 0.0);
+            lights[CLOCK_LIGHT_2ND].setBrightness(clock_2nd ? 1.0 : 0.0);
 
             // reset has 25% PWM
             const bool reset = ((tick % ticks_per_bar) < 2);
@@ -126,8 +130,11 @@ void Link::step()
         }
         else
         {
-            outputs[CLOCK_OUTPUT].value = 0.0;
-            lights[CLOCK_LIGHT].setBrightness(0.0);
+            outputs[CLOCK_OUTPUT_4TH].value = 0.0;
+            lights[CLOCK_LIGHT_4TH].setBrightness(0.0);
+            
+            outputs[CLOCK_OUTPUT_2ND].value = 0.0;
+            lights[CLOCK_LIGHT_2ND].setBrightness(0.0);
 
             outputs[RESET_OUTPUT].value = 0.0;
             lights[RESET_LIGHT].setBrightness(0.0);
@@ -157,12 +164,12 @@ LinkWidget::LinkWidget()
     addParam(createParam<KnobSimpleWhite>(Vec(16, 93), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
     addParam(createParam<KnobSimpleWhite>(Vec(16, 153), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
 
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 258), module, Link::CLOCK_OUTPUT));
-		addOutput(createOutput<PJ301MPort>(Vec(17.5, 212), module, Link::CLOCK_OUTPUT_2ND));
+    addOutput(createOutput<PJ301MPort>(Vec(17.5, 258), module, Link::CLOCK_OUTPUT_4TH));
+    addOutput(createOutput<PJ301MPort>(Vec(17.5, 212), module, Link::CLOCK_OUTPUT_2ND));
     addOutput(createOutput<PJ301MPort>(Vec(17.5, 304), module, Link::RESET_OUTPUT));
 
-    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT));
-		addChild(createLight<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
+    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT_4TH));
+    addChild(createLight<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
     addChild(createLight<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
     addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
 }
