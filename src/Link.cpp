@@ -69,10 +69,20 @@ public:
     void step() override;
 
 private:
+    void clampTick(int& tick, int maxTicks);
+
 	link_handle* m_link;
     int m_lastTick = -1;
     bool m_synced = false;
 };
+
+void Link::clampTick(int& tick, int maxTicks)
+{
+    if (tick < 0)
+        tick += maxTicks;
+    
+    tick %= maxTicks;
+}
 
 void Link::step()
 {
@@ -91,8 +101,7 @@ void Link::step()
     const double offset = params[OFFSET_PARAM].value * (5.0 * tick_length);
     int tick = static_cast<int>(std::floor((phase + offset) / tick_length));
 
-    if (tick < 0)
-        tick += ticks_per_bar;
+    clampTick(tick, ticks_per_bar);
 
     if (((tick >> 3) % 2) == 1)
     {
@@ -102,8 +111,7 @@ void Link::step()
         tick = static_cast<int>(std::floor((phase + offset - swing) / tick_length));
     }
 
-    if (tick < 0)
-        tick += ticks_per_bar;
+    clampTick(tick, ticks_per_bar);
 
     if ((m_lastTick != tick) || !m_synced)
     {
