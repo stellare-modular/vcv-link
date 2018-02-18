@@ -109,9 +109,9 @@ void Link::step()
 
         const double swing = params[SWING_PARAM].value * (max_swing_in_ticks * tick_length);
         tick = static_cast<int>(std::floor((phase + offset - swing) / tick_length));
-    }
 
-    clampTick(tick, ticks_per_bar);
+        clampTick(tick, ticks_per_bar);
+    }
 
     if ((m_lastTick != tick) || !m_synced)
     {
