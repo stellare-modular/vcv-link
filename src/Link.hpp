@@ -1,7 +1,7 @@
 /*
 
  VCV-Link by Stellare Modular
- Copyright (C) 2017 - Vincenzo Pietropaolo, Sander Baan
+ Copyright (C) 2017-2018 - Vincenzo Pietropaolo, Sander Baan
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -36,23 +36,15 @@ struct BlueSmallButton : SVGSwitch, MomentarySwitch
     }
 };
 
-struct SimpleKnobBlack : SVGKnob
+struct KnobSimpleWhite : SVGKnob
 {
-    SimpleKnobBlack()
+    KnobSimpleWhite()
     {
-        box.size = Vec(39.5, 39.5);
+        box.size = Vec(28, 28);
         minAngle = -0.82 * M_PI;
         maxAngle = 0.82 * M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/SimpleKnobBlack.svg")));
-    }
-};
-
-struct SimpleKnobBlackSmall : SimpleKnobBlack
-{
-	SimpleKnobBlackSmall()
-    {
-        box.size = Vec(30, 30);
+        setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
     }
 };
 

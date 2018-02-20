@@ -1,6 +1,7 @@
-SLUG = VCV-Link
-VERSION = 0.5.1
+SLUG = StellareModular-Link
+VERSION = 0.5.2
 
+FLAGS += -DSLUG=$(SLUG) -DVERSION=$(VERSION)
 FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include -Ilink-wrapper
 
 ifeq ($(OS),Windows_NT)
