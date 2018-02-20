@@ -1,4 +1,4 @@
-# vcv-link
+# Stellare Modular Link module for VCV Rack
 
 ## Link ##
 The link module is a very simple module which provides a 'link' connection with a link enabled application like Ableton Live. It will allow you also to connect two or more VCV rack instances on different computers together which are connected in the same WLAN or LAN. In order to sync perfectly we added a Offset control so you can compensate for any latency introduced in the Link connection.
