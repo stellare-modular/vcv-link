@@ -46,5 +46,6 @@ struct KnobSimpleWhite : SVGKnob
         maxAngle = 0.82 * M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
+        shadow->opacity = 0.f;
     }
 };
