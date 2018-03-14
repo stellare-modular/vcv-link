@@ -1,5 +1,5 @@
 SLUG = StellareModular-Link
-VERSION = 0.5.2
+VERSION = 0.6.0dev
 
 FLAGS += -DSLUG=$(SLUG) -DVERSION=$(VERSION)
 FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include -Ilink-wrapper
@@ -24,14 +24,10 @@ ifneq ($(OS),Windows_NT)
 	SOURCES += $(wildcard link-wrapper/*.cpp)
 endif
 
-include ../../plugin.mk
+DISTRIBUTABLES += $(wildcard LICENSE*) res
 
+# If RACK_DIR is not defined when calling the Makefile, default to two levels above
+RACK_DIR ?= ../..
 
-# Convenience target for packaging files into a ZIP file
-.PHONY: dist
-dist: all
-	mkdir -p dist/$(SLUG)
-	cp LICENSE* dist/$(SLUG)/
-	cp $(TARGET) dist/$(SLUG)/
-	cp -R res dist/$(SLUG)/
-	cd dist && zip -5 -r $(SLUG)-$(VERSION)-$(ARCH).zip $(SLUG)
+# Include the VCV Rack plugin Makefile framework
+include $(RACK_DIR)/plugin.mk

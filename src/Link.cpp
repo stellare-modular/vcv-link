@@ -153,10 +153,13 @@ void Link::step()
     lights[SYNC_LIGHT].setBrightness(m_synced ? 0.0 : 1.0);
 }
 
-LinkWidget::LinkWidget()
+struct LinkWidget : ModuleWidget
 {
-    Link* module = new Link();
-    setModule(module);
+    LinkWidget(Link*);
+};
+
+LinkWidget::LinkWidget(Link* module) : ModuleWidget(module)
+{
     box.size = Vec(60, 380);
 
     SVGPanel* panel = new SVGPanel();
@@ -180,3 +183,5 @@ LinkWidget::LinkWidget()
     addChild(createLight<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
     addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
 }
+
+Model *modelLink = Model::create<Link, LinkWidget>("Stellare Modular", "Link", "Link", CLOCK_TAG);

@@ -23,6 +23,7 @@
 using namespace rack;
 
 extern Plugin* plugin;
+extern Model* modelLink;
 
 struct BlueSmallButton : SVGSwitch, MomentarySwitch
 {
@@ -46,9 +47,4 @@ struct KnobSimpleWhite : SVGKnob
 
         setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
     }
-};
-
-struct LinkWidget : ModuleWidget
-{
-    LinkWidget();
 };
