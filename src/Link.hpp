@@ -23,6 +23,7 @@
 using namespace rack;
 
 extern Plugin* plugin;
+extern Model* modelLink;
 
 struct BlueSmallButton : SVGSwitch, MomentarySwitch
 {
@@ -45,10 +46,6 @@ struct KnobSimpleWhite : SVGKnob
         maxAngle = 0.82 * M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
+        shadow->opacity = 0.f;
     }
-};
-
-struct LinkWidget : ModuleWidget
-{
-    LinkWidget();
 };
