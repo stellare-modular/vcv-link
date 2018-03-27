@@ -167,21 +167,21 @@ LinkWidget::LinkWidget(Link* module) : ModuleWidget(module)
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/Link.svg")));
     addChild(panel);
 
-    addChild(createScrew<ScrewSilver>(Vec(23, 0)));
-    addChild(createScrew<ScrewSilver>(Vec(23, 365)));
+    addChild(Widget::create<ScrewSilver>(Vec(23, 0)));
+    addChild(Widget::create<ScrewSilver>(Vec(23, 365)));
 
-    addParam(createParam<BlueSmallButton>(Vec(22, 42), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 93), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 153), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
+    addParam(ParamWidget::create<BlueSmallButton>(Vec(22, 42), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
+    addParam(ParamWidget::create<KnobSimpleWhite>(Vec(16, 93), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
+    addParam(ParamWidget::create<KnobSimpleWhite>(Vec(16, 153), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
 
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 258), module, Link::CLOCK_OUTPUT_4TH));
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 212), module, Link::CLOCK_OUTPUT_2ND));
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 304), module, Link::RESET_OUTPUT));
+    addOutput(Port::create<PJ301MPort>(Vec(17.5, 258), Port::OUTPUT, module, Link::CLOCK_OUTPUT_4TH));
+    addOutput(Port::create<PJ301MPort>(Vec(17.5, 212), Port::OUTPUT, module, Link::CLOCK_OUTPUT_2ND));
+    addOutput(Port::create<PJ301MPort>(Vec(17.5, 304), Port::OUTPUT, module, Link::RESET_OUTPUT));
 
-    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT_4TH));
-    addChild(createLight<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
-    addChild(createLight<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
-    addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
+    addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT_4TH));
+    addChild(ModuleLightWidget::create<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
+    addChild(ModuleLightWidget::create<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
+    addChild(ModuleLightWidget::create<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
 }
 
 Model *modelLink = Model::create<Link, LinkWidget>("Stellare Modular", "Link", "Link", CLOCK_TAG);
