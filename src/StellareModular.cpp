@@ -36,5 +36,5 @@ void init(rack::Plugin* p)
     p->slug = TOSTRING(SLUG);
     p->version = TOSTRING(VERSION);
 
-    p->addModel(createModel<LinkWidget>("Stellare Modular", "Link", "Link", CLOCK_TAG));
+    p->addModel(modelLink);
 }
