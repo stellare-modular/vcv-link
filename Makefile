@@ -1,5 +1,5 @@
 SLUG = StellareModular-Link
-VERSION = 0.6.0
+VERSION = 0.6.1
 
 FLAGS += -DSLUG=$(SLUG) -DVERSION=$(VERSION)
 FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include -Ilink-wrapper
