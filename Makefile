@@ -22,7 +22,7 @@ ifeq ($(ARCH), win)
 	LDFLAGS += -lwsock32 -lws2_32 -liphlpapi
 endif
 
-SOURCES = $(wildcard src/*.cpp) $(wildcard link-wrapper/*.cpp)
+SOURCES += $(wildcard src/*.cpp)
 
 DISTRIBUTABLES += $(wildcard LICENSE*) res
 
