@@ -5,7 +5,7 @@ FLAGS += -DSLUG=$(SLUG) -DVERSION=$(VERSION)
 FLAGS += -Imodules/link/include -Imodules/link/modules/asio-standalone/asio/include -Ilink-wrapper
 
 # If RACK_DIR is not defined when calling the Makefile, default to two levels above
-RACK_DIR ?= ../..
+RACK_DIR ?= Rack-SDK
 
 include $(RACK_DIR)/arch.mk
 
