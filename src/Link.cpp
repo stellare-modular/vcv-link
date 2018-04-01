@@ -20,7 +20,21 @@
 
 #include "Link.hpp"
 
-#include <link-wrapper.h>
+// A macro named "defer" is defined both in Rack and ASIO standalone
+// headers, here we undefine the Rack definition which stays unused.
+#undef defer
+
+#if LINK_PLATFORM_WINDOWS
+#include <stdint.h>
+#include <stdlib.h>
+#define htonll(x) _byteswap_uint64(x)
+#define ntohll(x) _byteswap_uint64(x)
+#endif
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-override"
+#include <ableton/Link.hpp>
+#pragma GCC diagnostic pop
 
 struct Link : Module
 {
@@ -57,12 +71,17 @@ public:
 
     Link() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS)
     {
-		m_link = create_link_wrapper();
+        m_link = new ableton::Link(120.0);
+        m_link->enable(true);
     }
 
     ~Link()
     {
-		delete_link_wrapper(m_link);
+        if (m_link)
+        {
+            m_link->enable(false);
+            delete m_link;
+        }
     }
 
     void step() override;
@@ -70,7 +89,7 @@ public:
 private:
     void clampTick(int& tick, int maxTicks);
 
-	link_handle* m_link;
+    ableton::Link* m_link;
     int m_lastTick = -1;
     bool m_synced = false;
 };
@@ -96,7 +115,15 @@ void Link::step()
 		m_synced = false;
 	}
 
-	const double phase = get_link_phase(m_link, beats_per_bar);
+    double phase = 0.0;
+
+    if (m_link)
+    {
+        const auto time = m_link->clock().micros();
+        const auto timeline = m_link->captureAppTimeline();
+        phase = timeline.phaseAtTime(time, beats_per_bar);
+    }
+
     const double offset = params[OFFSET_PARAM].value * (5.0 * tick_length);
     int tick = static_cast<int>(std::floor((phase + offset) / tick_length));
 
