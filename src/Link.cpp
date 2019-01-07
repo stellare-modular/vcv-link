@@ -20,9 +20,11 @@
 
 #include "Link.hpp"
 
-// A macro named "defer" is defined both in Rack and ASIO standalone
-// headers, here we undefine the Rack definition which stays unused.
+// Macros named "defer", "debug" and "info" are defined both in Rack and ASIO
+// standalone headers, here we undefine the Rack definitions which stay unused.
 #undef defer
+#undef debug
+#undef info
 
 #if LINK_PLATFORM_WINDOWS
 #include <stdint.h>
