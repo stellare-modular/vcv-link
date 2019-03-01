@@ -7,7 +7,7 @@ SLUG = StellareModular-Link
 
 # Must follow the format in the Versioning section of
 # https://vcvrack.com/manual/PluginDevelopmentTutorial.html
-VERSION = 0.6.1
+VERSION = 0.6.2
 
 include $(RACK_DIR)/arch.mk
 
