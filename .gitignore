@@ -1,3 +1,4 @@
 build
-plugin.dylib
+dist
 plugin.dll
+plugin.dylib
