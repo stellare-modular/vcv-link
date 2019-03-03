@@ -46,6 +46,7 @@ public:
         SYNC_PARAM = 0,
         OFFSET_PARAM,
         SWING_PARAM,
+				TEMPO_PARAM,
         NUM_PARAMS
     };
 
@@ -100,7 +101,7 @@ void Link::clampTick(int& tick, int maxTicks)
 {
     if (tick < 0)
         tick += maxTicks;
-    
+
     tick %= maxTicks;
 }
 
@@ -168,7 +169,7 @@ void Link::step()
         {
             outputs[CLOCK_OUTPUT_4TH].value = 0.0;
             lights[CLOCK_LIGHT_4TH].setBrightness(0.0);
-            
+
             outputs[CLOCK_OUTPUT_2ND].value = 0.0;
             lights[CLOCK_LIGHT_2ND].setBrightness(0.0);
 
@@ -187,30 +188,25 @@ struct LinkWidget : ModuleWidget
     LinkWidget(Link*);
 };
 
-LinkWidget::LinkWidget(Link* module) : ModuleWidget(module)
-{
-    box.size = Vec(60, 380);
+LinkWidget::LinkWidget(Link* module) : ModuleWidget(module) {
+    setPanel(SVG::load(assetPlugin(plugin, "res/Link.svg")));
 
-    SVGPanel* panel = new SVGPanel();
-    panel->box.size = box.size;
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/Link.svg")));
-    addChild(panel);
+		addChild(Widget::create<ScrewBlack>(Vec(0, 0)));
+		addChild(Widget::create<ScrewBlack>(Vec(box.size.x - 15, 365)));
 
-    addChild(Widget::create<ScrewSilver>(Vec(23, 0)));
-    addChild(Widget::create<ScrewSilver>(Vec(23, 365)));
+    addParam(ParamWidget::create<StellarePushButton>(Vec(19.5, 220.5), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
+		addParam(ParamWidget::create<StellareKnob01>(Vec(16, 73), module, Link::TEMPO_PARAM, -1.0, 1.0, 0.0));
+    addParam(ParamWidget::create<StellareKnob01>(Vec(16, 121), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
+    addParam(ParamWidget::create<StellareKnob01>(Vec(16, 169), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
 
-    addParam(ParamWidget::create<BlueSmallButton>(Vec(22, 42), module, Link::SYNC_PARAM, 0.0, 1.0, 0.0));
-    addParam(ParamWidget::create<KnobSimpleWhite>(Vec(16, 93), module, Link::OFFSET_PARAM, -1.0, 1.0, 0.0));
-    addParam(ParamWidget::create<KnobSimpleWhite>(Vec(16, 153), module, Link::SWING_PARAM, 0.0, 1.0, 0.0));
+    addOutput(Port::create<StellareJack>(Vec(11, 304), Port::OUTPUT, module, Link::CLOCK_OUTPUT_4TH));
+    addOutput(Port::create<StellareJack>(Vec(27, 268), Port::OUTPUT, module, Link::CLOCK_OUTPUT_2ND));
+    addOutput(Port::create<StellareJack>(Vec(26, 340), Port::OUTPUT, module, Link::RESET_OUTPUT));
 
-    addOutput(Port::create<PJ301MPort>(Vec(17.5, 258), Port::OUTPUT, module, Link::CLOCK_OUTPUT_4TH));
-    addOutput(Port::create<PJ301MPort>(Vec(17.5, 212), Port::OUTPUT, module, Link::CLOCK_OUTPUT_2ND));
-    addOutput(Port::create<PJ301MPort>(Vec(17.5, 304), Port::OUTPUT, module, Link::RESET_OUTPUT));
-
-    addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT_4TH));
-    addChild(ModuleLightWidget::create<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
-    addChild(ModuleLightWidget::create<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
-    addChild(ModuleLightWidget::create<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
+    addChild(ModuleLightWidget::create<StellarePushButtonLight<StellareBlueLight>>(Vec(27.5, 297.5), module, Link::CLOCK_LIGHT_4TH));
+    addChild(ModuleLightWidget::create<StellarePushButtonLight<StellareGreenLight>>(Vec(27.5, 261.5), module, Link::CLOCK_LIGHT_2ND));
+    addChild(ModuleLightWidget::create<StellarePushButtonLight<StellareYellowLight>>(Vec(27.5, 333.4), module, Link::RESET_LIGHT));
+    addChild(ModuleLightWidget::create<StellarePushButtonLight<StellareRedLight>>(Vec(26.8, 227.8), module, Link::SYNC_LIGHT));
 }
 
 Model *modelLink = Model::create<Link, LinkWidget>("Stellare Modular", "Link", "Link", CLOCK_TAG);
