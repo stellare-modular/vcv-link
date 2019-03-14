@@ -22,22 +22,23 @@
 
 using namespace rack;
 
-extern Plugin* plugin;
+extern Plugin* pluginInstance;
 extern Model* modelLink;
 
-struct BlueSmallButton : SVGSwitch, MomentarySwitch
+struct BlueSmallButton : SvgSwitch
 {
     BlueSmallButton()
     {
-        addFrame(SVG::load(assetPlugin(plugin, "res/BlueSmallButton_0.svg")));
-        addFrame(SVG::load(assetPlugin(plugin, "res/BlueSmallButton_1.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/BlueSmallButton_0.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/BlueSmallButton_1.svg")));
 
         sw->wrap();
+        momentary = true;
         box.size = sw->box.size;
     }
 };
 
-struct KnobSimpleWhite : SVGKnob
+struct KnobSimpleWhite : SvgKnob
 {
     KnobSimpleWhite()
     {
@@ -45,7 +46,7 @@ struct KnobSimpleWhite : SVGKnob
         minAngle = -0.82 * M_PI;
         maxAngle = 0.82 * M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/KnobSimpleWhite.svg")));
         shadow->opacity = 0.f;
     }
 };
