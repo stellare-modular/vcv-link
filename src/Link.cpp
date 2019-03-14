@@ -118,7 +118,7 @@ void Link::process(const ProcessArgs& args)
     static const double beats_per_bar = 4.0;
     static const int ticks_per_bar = static_cast<int>(beats_per_bar / tick_length);
 
-	if (params[SYNC_PARAM].getValue()= 1.0)
+	if (params[SYNC_PARAM].getValue() == 1.0)
 	{
 		m_synced = false;
 	}
