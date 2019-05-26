@@ -206,18 +206,18 @@ LinkWidget::LinkWidget(Link* module)
     addChild(createWidget<ScrewSilver>(Vec(23, 0)));
     addChild(createWidget<ScrewSilver>(Vec(23, 365)));
 
-    addParam(createParam<BlueSmallButton>(Vec(22, 42), module, Link::SYNC_PARAM));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 93), module, Link::OFFSET_PARAM));
-    addParam(createParam<KnobSimpleWhite>(Vec(16, 153), module, Link::SWING_PARAM));
+    addParam(createParam<StellarePushButton>(Vec(19.7, 155), module, Link::SYNC_PARAM));
+    addParam(createParam<StellareKnob01>(Vec(16.2, 58), module, Link::OFFSET_PARAM));
+    addParam(createParam<KnobSimpleWhite>(Vec(16.2, 105.7), module, Link::SWING_PARAM));
 
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 258), module, Link::CLOCK_OUTPUT_4TH));
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 212), module, Link::CLOCK_OUTPUT_2ND));
-    addOutput(createOutput<PJ301MPort>(Vec(17.5, 304), module, Link::RESET_OUTPUT));
+    addOutput(createOutput<StellareJack>(Vec(11, 304), module, Link::CLOCK_OUTPUT_4TH));
+    addOutput(createOutput<StellareJack>(Vec(27, 268), module, Link::CLOCK_OUTPUT_2ND));
+    addOutput(createOutput<StellareJack>(Vec(26, 340), module, Link::RESET_OUTPUT));
 
-    addChild(createLight<SmallLight<BlueLight>>(Vec(17, 253.5), module, Link::CLOCK_LIGHT_4TH));
-    addChild(createLight<SmallLight<GreenLight>>(Vec(17, 207), module, Link::CLOCK_LIGHT_2ND));
-    addChild(createLight<SmallLight<YellowLight>>(Vec(17, 300), module, Link::RESET_LIGHT));
-    addChild(createLight<MediumLight<BlueLight>>(Vec(25.4, 45.4), module, Link::SYNC_LIGHT));
+    addChild(createLight<SmallLight<BlueLight>>(Vec(27.5, 297.5), module, Link::CLOCK_LIGHT_4TH));
+    addChild(createLight<SmallLight<GreenLight>>(Vec(27.5, 261.5), module, Link::CLOCK_LIGHT_2ND));
+    addChild(createLight<SmallLight<YellowLight>>(Vec(27.5, 333.4), module, Link::RESET_LIGHT));
+    addChild(createLight<MediumLight<BlueLight>>(Vec(27, 162.3), module, Link::SYNC_LIGHT));
 }
 
 Model *modelLink = createModel<Link, LinkWidget>("Link");
