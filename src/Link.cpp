@@ -208,7 +208,7 @@ LinkWidget::LinkWidget(Link* module)
 
     addParam(createParam<StellarePushButton>(Vec(19.7, 155), module, Link::SYNC_PARAM));
     addParam(createParam<StellareKnob01>(Vec(16.2, 58), module, Link::OFFSET_PARAM));
-    addParam(createParam<KnobSimpleWhite>(Vec(16.2, 105.7), module, Link::SWING_PARAM));
+    addParam(createParam<StellareKnob01>(Vec(16.2, 105.7), module, Link::SWING_PARAM));
 
     addOutput(createOutput<StellareJack>(Vec(11, 304), module, Link::CLOCK_OUTPUT_4TH));
     addOutput(createOutput<StellareJack>(Vec(27, 268), module, Link::CLOCK_OUTPUT_2ND));

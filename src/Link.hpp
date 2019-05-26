@@ -25,12 +25,11 @@ using namespace rack;
 extern Plugin* pluginInstance;
 extern Model* modelLink;
 
-struct BlueSmallButton : SvgSwitch
+struct StellarePushButton : SvgSwitch
 {
-    BlueSmallButton()
+    StellarePushButton()
     {
-        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/BlueSmallButton_0.svg")));
-        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/BlueSmallButton_1.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/StellarePushButton.svg")));
 
         sw->wrap();
         momentary = true;
@@ -38,15 +37,24 @@ struct BlueSmallButton : SvgSwitch
     }
 };
 
-struct KnobSimpleWhite : SvgKnob
+struct StellareKnob01 : SvgKnob
 {
-    KnobSimpleWhite()
+    StellareKnob01()
     {
         box.size = Vec(28, 28);
         minAngle = -0.82 * M_PI;
         maxAngle = 0.82 * M_PI;
 
-        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/KnobSimpleWhite.svg")));
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/StellareKnob01.svg")));
+        shadow->opacity = 0.f;
+    }
+};
+
+struct StellareJack : SvgPort
+{
+    StellareJack()
+    {
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/StellareJack.svg")));
         shadow->opacity = 0.f;
     }
 };
