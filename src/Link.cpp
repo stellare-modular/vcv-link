@@ -75,9 +75,9 @@ public:
     {
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-        params[Link::SYNC_PARAM].config(0.0, 1.0, 0.0);
-        params[Link::SWING_PARAM].config(0.0, 1.0, 0.0);
-        params[Link::OFFSET_PARAM].config(-1.0, 1.0, 0.0);
+        configParam(SYNC_PARAM, 0.0, 1.0, 0.0);
+        configParam(SWING_PARAM, 0.0, 1.0, 0.0);
+        configParam(OFFSET_PARAM, -1.0, 1.0, 0.0);
 
         m_link = new ableton::Link(120.0);
         m_link->enable(true);

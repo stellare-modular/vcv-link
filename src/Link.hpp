@@ -29,7 +29,8 @@ struct StellarePushButton : SvgSwitch
 {
     StellarePushButton()
     {
-        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/StellarePushButton.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Button.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Button_push.svg")));
 
         sw->wrap();
         momentary = true;
@@ -45,7 +46,7 @@ struct StellareKnob01 : SvgKnob
         minAngle = -0.82 * M_PI;
         maxAngle = 0.82 * M_PI;
 
-        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/StellareKnob01.svg")));
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Knob_M.svg")));
         shadow->opacity = 0.f;
     }
 };
@@ -54,7 +55,7 @@ struct StellareJack : SvgPort
 {
     StellareJack()
     {
-        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/StellareJack.svg")));
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Jack.svg")));
         shadow->opacity = 0.f;
     }
 };
