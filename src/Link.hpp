@@ -59,3 +59,11 @@ struct StellareJack : SvgPort
         shadow->opacity = 0.f;
     }
 };
+
+struct StellareScrew : SvgScrew
+{
+    StellareScrew()
+    {
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Screw.svg")));
+    }
+};

@@ -203,8 +203,8 @@ LinkWidget::LinkWidget(Link* module)
     panel->setBackground(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Link.svg")));
     addChild(panel);
 
-		addChild(createWidget<ScrewBlack>(Vec(0, 0)));
-		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 15, 365)));
+		addChild(createWidget<StellareScrew>(Vec(0, 0)));
+		addChild(createWidget<StellareScrew>(Vec(box.size.x - 15, 365)));
 
     addParam(createParam<StellarePushButton>(Vec(19.7, 155), module, Link::SYNC_PARAM));
     addParam(createParam<StellareKnob01>(Vec(16.2, 58), module, Link::OFFSET_PARAM));
