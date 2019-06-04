@@ -106,7 +106,7 @@ void Link::clampTick(int& tick, int maxTicks)
 {
     if (tick < 0)
         tick += maxTicks;
-    
+
     tick %= maxTicks;
 }
 
@@ -174,7 +174,7 @@ void Link::process(const ProcessArgs& args)
         {
             outputs[CLOCK_OUTPUT_4TH].setVoltage(0.0);
             lights[CLOCK_LIGHT_4TH].setBrightness(0.0);
-            
+
             outputs[CLOCK_OUTPUT_2ND].setVoltage(0.0);
             lights[CLOCK_LIGHT_2ND].setBrightness(0.0);
 
@@ -217,7 +217,7 @@ LinkWidget::LinkWidget(Link* module)
     addChild(createLight<SmallLight<BlueLight>>(Vec(27.5, 297.5), module, Link::CLOCK_LIGHT_4TH));
     addChild(createLight<SmallLight<GreenLight>>(Vec(27.5, 261.5), module, Link::CLOCK_LIGHT_2ND));
     addChild(createLight<SmallLight<YellowLight>>(Vec(27.5, 333.4), module, Link::RESET_LIGHT));
-    addChild(createLight<MediumLight<BlueLight>>(Vec(27, 162.3), module, Link::SYNC_LIGHT));
+    addChild(createLight<SmallLight<BlueLight>>(Vec(27, 162.3), module, Link::SYNC_LIGHT));
 }
 
 Model *modelLink = createModel<Link, LinkWidget>("Link");
