@@ -1,14 +1,6 @@
 # If RACK_DIR is not defined when calling the Makefile, defaults to use the Rack-SDK submodule
 RACK_DIR ?= Rack-SDK
 
-# Must follow the format in the Naming section of
-# https://vcvrack.com/manual/PluginDevelopmentTutorial.html
-SLUG = StellareModular-Link
-
-# Must follow the format in the Versioning section of
-# https://vcvrack.com/manual/PluginDevelopmentTutorial.html
-VERSION = 0.6.2
-
 include $(RACK_DIR)/arch.mk
 
 ifeq ($(ARCH), lin)
