@@ -51,6 +51,22 @@ struct StellareKnob01 : SvgKnob
     }
 };
 
+struct StellareKnobSnap01 : SvgKnob
+{
+    StellareKnobSnap01()
+    {
+        box.size = Vec(28, 28);
+        minAngle = -0.82 * M_PI;
+        maxAngle = 0.82 * M_PI;
+
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Knob_M.svg")));
+        shadow->opacity = 0.f;
+
+        snap = true;
+        smooth = false;
+    }
+};
+
 struct StellareJack : SvgPort
 {
     StellareJack()

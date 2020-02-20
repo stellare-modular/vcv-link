@@ -45,6 +45,7 @@ public:
     {
         SYNC_PARAM = 0,
         OFFSET_PARAM,
+        RATIO_PARAM,
         SWING_PARAM,
         NUM_PARAMS
     };
@@ -57,9 +58,10 @@ public:
 	enum OutputIds
     {
         CLOCK_OUTPUT_4TH = 0,
-		RESET_OUTPUT,
+        RESET_OUTPUT,
         CLOCK_OUTPUT_2ND,
-		NUM_OUTPUTS
+        BPM_OUTPUT,
+        NUM_OUTPUTS
 	};
 
 	enum LightIds
@@ -77,6 +79,7 @@ public:
 
         configParam(SYNC_PARAM, 0.0, 1.0, 0.0);
         configParam(SWING_PARAM, 0.0, 1.0, 0.0);
+        configParam(RATIO_PARAM, 0.0, 6.0, 3.0);
         configParam(OFFSET_PARAM, -1.0, 1.0, 0.0);
 
         m_link = new ableton::Link(120.0);
@@ -156,8 +159,31 @@ void Link::process(const ProcessArgs& args)
 
         if (m_synced)
         {
+            int period_in_ticks = 0;
+            switch (static_cast<int>(params[RATIO_PARAM].getValue()))
+            {
+                case 0: // 16th
+                    period_in_ticks = 8;
+                    break;
+
+                case 1: // 8th
+                    period_in_ticks = 16;
+                    break;
+
+                case 2: // 4th
+                    period_in_ticks = 32;
+                    break;
+
+                case 3: // beat
+                case 4: // bar
+                case 5: // 2 bars
+                case 6: // 4 bars
+                    period_in_ticks = 128;
+                    break;
+            }
+
             // 8 ticks per 4th of beat, clock has 50% PWM
-            const bool clock_4th = ((tick % 8) < 4);
+            const bool clock_4th = ((tick % period_in_ticks) < 4);
             outputs[CLOCK_OUTPUT_4TH].setVoltage(clock_4th ? 10.0 : 0.0);
             lights[CLOCK_LIGHT_4TH].setBrightness(clock_4th ? 1.0 : 0.0);
 
@@ -203,21 +229,21 @@ LinkWidget::LinkWidget(Link* module)
     panel->setBackground(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Link.svg")));
     addChild(panel);
 
-		addChild(createWidget<StellareScrew>(Vec(0, 0)));
-		addChild(createWidget<StellareScrew>(Vec(box.size.x - 15, 365)));
+    addChild(createWidget<StellareScrew>(Vec(0, 0)));
+    addChild(createWidget<StellareScrew>(Vec(box.size.x - 15, 365)));
 
-    addParam(createParam<StellarePushButton>(Vec(19.7, 155), module, Link::SYNC_PARAM));
-    addParam(createParam<StellareKnob01>(Vec(16.2, 58), module, Link::OFFSET_PARAM));
-    addParam(createParam<StellareKnob01>(Vec(16.2, 105.7), module, Link::SWING_PARAM));
+    addParam(createParam<StellarePushButton>(Vec(19.5, 209.5), module, Link::SYNC_PARAM));
+    addParam(createParam<StellareKnob01>(Vec(16.2, 57.5), module, Link::OFFSET_PARAM));
+    addParam(createParam<StellareKnob01>(Vec(16.2, 108.2), module, Link::SWING_PARAM));
+    addParam(createParam<StellareKnobSnap01>(Vec(16.2, 160.9), module, Link::RATIO_PARAM));
 
-    addOutput(createOutput<StellareJack>(Vec(11, 304), module, Link::CLOCK_OUTPUT_4TH));
-    addOutput(createOutput<StellareJack>(Vec(27, 268), module, Link::CLOCK_OUTPUT_2ND));
-    addOutput(createOutput<StellareJack>(Vec(26, 340), module, Link::RESET_OUTPUT));
+    addOutput(createOutput<StellareJack>(Vec(12.7, 305.2), module, Link::CLOCK_OUTPUT_4TH));
+    addOutput(createOutput<StellareJack>(Vec(23.6, 266.8), module, Link::BPM_OUTPUT));
+    addOutput(createOutput<StellareJack>(Vec(23.6, 342.2), module, Link::RESET_OUTPUT));
 
     addChild(createLight<SmallLight<BlueLight>>(Vec(27.5, 297.5), module, Link::CLOCK_LIGHT_4TH));
-    addChild(createLight<SmallLight<GreenLight>>(Vec(27.5, 261.5), module, Link::CLOCK_LIGHT_2ND));
     addChild(createLight<SmallLight<YellowLight>>(Vec(27.5, 333.4), module, Link::RESET_LIGHT));
-    addChild(createLight<SmallLight<BlueLight>>(Vec(27, 162.3), module, Link::SYNC_LIGHT));
+    addChild(createLight<SmallLight<BlueLight>>(Vec(27, 217), module, Link::SYNC_LIGHT));
 }
 
 Model *modelLink = createModel<Link, LinkWidget>("Link");
