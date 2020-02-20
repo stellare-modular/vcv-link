@@ -126,12 +126,15 @@ void Link::process(const ProcessArgs& args)
 		m_synced = false;
 	}
 
+    double tempo = 0.0;
     double phase = 0.0;
 
     if (m_link)
     {
         const auto time = m_link->clock().micros();
         const auto timeline = m_link->captureAppTimeline();
+
+        tempo = timeline.tempo();
         phase = timeline.phaseAtTime(time, beats_per_bar);
     }
 
@@ -162,39 +165,49 @@ void Link::process(const ProcessArgs& args)
             int period_in_ticks = 0;
             switch (static_cast<int>(params[RATIO_PARAM].getValue()))
             {
-                case 0: // 16th
-                    period_in_ticks = 8;
-                    break;
-
-                case 1: // 8th
-                    period_in_ticks = 16;
-                    break;
-
-                case 2: // 4th
+                case 0: // 1 beat
                     period_in_ticks = 32;
                     break;
 
-                case 3: // beat
-                case 4: // bar
-                case 5: // 2 bars
-                case 6: // 4 bars
-                    period_in_ticks = 128;
+                case 1: // 1/2
+                    period_in_ticks = 16;
+                    break;
+
+                case 2: // 1/4
+                    period_in_ticks = 8;
+                    break;
+
+                case 3: // 1/6 (TO DO)
+                    period_in_ticks = 32;
+                    break;
+
+                case 4: // 1/8
+                    period_in_ticks = 4;
+                    break;
+
+                case 5: // 1/12 (TO DO)
+                    period_in_ticks = 32;
+                    break;
+
+                case 6: // 1/16
+                    period_in_ticks = 2;
                     break;
             }
 
-            // 8 ticks per 4th of beat, clock has 50% PWM
-            const bool clock_4th = ((tick % period_in_ticks) < 4);
+            // clock has 50% PWM
+            const bool clock_4th = ((tick % period_in_ticks) < (period_in_ticks / 2));
             outputs[CLOCK_OUTPUT_4TH].setVoltage(clock_4th ? 10.0 : 0.0);
             lights[CLOCK_LIGHT_4TH].setBrightness(clock_4th ? 1.0 : 0.0);
 
-            const bool clock_2nd = ((tick % 16) < 8);
-            outputs[CLOCK_OUTPUT_2ND].setVoltage(clock_2nd ? 10.0 : 0.0);
-            lights[CLOCK_LIGHT_2ND].setBrightness(clock_2nd ? 1.0 : 0.0);
+            outputs[CLOCK_OUTPUT_2ND].setVoltage(0.0);
+            lights[CLOCK_LIGHT_2ND].setBrightness(0.0);
 
             // reset has 25% PWM
             const bool reset = ((tick % ticks_per_bar) < 2);
             outputs[RESET_OUTPUT].setVoltage(reset ? 10.0 : 0.0);
             lights[RESET_LIGHT].setBrightness(reset ? 1.0 : 0.0);
+
+            outputs[BPM_OUTPUT].value = log2f(tempo / 120.f);
         }
         else
         {
