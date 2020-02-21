@@ -79,7 +79,7 @@ public:
 
         configParam(SYNC_PARAM, 0.0, 1.0, 0.0);
         configParam(SWING_PARAM, 0.0, 1.0, 0.0);
-        configParam(RATIO_PARAM, 0.0, 6.0, 3.0);
+        configParam(RATIO_PARAM, 0.0, 4.0, 2.0);
         configParam(OFFSET_PARAM, -1.0, 1.0, 0.0);
 
         m_link = new ableton::Link(120.0);
@@ -128,6 +128,7 @@ void Link::process(const ProcessArgs& args)
 
     double tempo = 0.0;
     double phase = 0.0;
+    bool playing = true;
 
     if (m_link)
     {
@@ -136,6 +137,11 @@ void Link::process(const ProcessArgs& args)
 
         tempo = timeline.tempo();
         phase = timeline.phaseAtTime(time, beats_per_bar);
+
+        if (m_link->isStartStopSyncEnabled())
+        {
+            playing = timeline.isPlaying();
+        }
     }
 
     const double offset = params[OFFSET_PARAM].getValue() * (5.0 * tick_length);
@@ -160,42 +166,34 @@ void Link::process(const ProcessArgs& args)
         if (tick == 0)
             m_synced = true;
 
-        if (m_synced)
+        if (m_synced && playing)
         {
             int period_in_ticks = 0;
             switch (static_cast<int>(params[RATIO_PARAM].getValue()))
             {
-                case 0: // 1 beat
+                case 0: // 4 beats
+                    period_in_ticks = 128;
+                    break;
+
+                case 1: // 2 beats
+                    period_in_ticks = 64;
+                    break;
+
+                case 2: // 1 beat
                     period_in_ticks = 32;
                     break;
 
-                case 1: // 1/2
+                case 3: // 1/2 beat
                     period_in_ticks = 16;
                     break;
 
-                case 2: // 1/4
+                case 4: // 1/4 beat
                     period_in_ticks = 8;
-                    break;
-
-                case 3: // 1/6 (TO DO)
-                    period_in_ticks = 32;
-                    break;
-
-                case 4: // 1/8
-                    period_in_ticks = 4;
-                    break;
-
-                case 5: // 1/12 (TO DO)
-                    period_in_ticks = 32;
-                    break;
-
-                case 6: // 1/16
-                    period_in_ticks = 2;
                     break;
             }
 
             // clock has 50% PWM
-            const bool clock_4th = ((tick % period_in_ticks) < (period_in_ticks / 2));
+            const bool clock_4th = ((tick % period_in_ticks) < 2);
             outputs[CLOCK_OUTPUT_4TH].setVoltage(clock_4th ? 10.0 : 0.0);
             lights[CLOCK_LIGHT_4TH].setBrightness(clock_4th ? 1.0 : 0.0);
 
