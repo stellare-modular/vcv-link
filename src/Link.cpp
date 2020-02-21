@@ -84,6 +84,7 @@ public:
 
         m_link = new ableton::Link(120.0);
         m_link->enable(true);
+        m_link->enableStartStopSync(true);
     }
 
     ~Link()
