@@ -132,7 +132,7 @@ void Link::process(const ProcessArgs& args)
     if (m_link)
     {
         const auto time = m_link->clock().micros();
-        const auto timeline = m_link->captureAppTimeline();
+        const auto timeline = m_link->captureAppSessionState();
 
         tempo = timeline.tempo();
         phase = timeline.phaseAtTime(time, beats_per_bar);
