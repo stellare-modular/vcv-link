@@ -38,6 +38,8 @@
 #include <ableton/Link.hpp>
 #pragma GCC diagnostic pop
 
+#include <atomic>
+
 struct Link : Module
 {
 public:
@@ -82,18 +84,12 @@ public:
         configParam(RATIO_PARAM, 0.0, 4.0, 2.0);
         configParam(OFFSET_PARAM, -1.0, 1.0, 0.0);
 
-        m_link = new ableton::Link(120.0);
-        m_link->enable(true);
-        m_link->enableStartStopSync(true);
+        attachModule();
     }
 
     ~Link()
     {
-        if (m_link)
-        {
-            m_link->enable(false);
-            delete m_link;
-        }
+        detachModule();
     }
 
     void process(const ProcessArgs& args) override;
@@ -101,9 +97,17 @@ public:
 private:
     void clampTick(int& tick, int maxTicks);
 
-    ableton::Link* m_link;
     int m_lastTick = -1;
     bool m_synced = false;
+
+    // Handling a single instance of ableton::Link
+    // also for multiple instances of Link module
+
+    static void attachModule();
+    static void detachModule();
+
+    static ableton::Link* g_link;
+    static std::atomic<int> g_instances;
 };
 
 void Link::clampTick(int& tick, int maxTicks)
@@ -131,15 +135,15 @@ void Link::process(const ProcessArgs& args)
     double phase = 0.0;
     bool playing = true;
 
-    if (m_link)
+    if (g_link)
     {
-        const auto time = m_link->clock().micros();
-        const auto timeline = m_link->captureAppSessionState();
+        const auto time = g_link->clock().micros();
+        const auto timeline = g_link->captureAppSessionState();
 
         tempo = timeline.tempo();
         phase = timeline.phaseAtTime(time, beats_per_bar);
 
-        if (m_link->isStartStopSyncEnabled())
+        if (g_link->isStartStopSyncEnabled())
         {
             playing = timeline.isPlaying();
         }
@@ -225,6 +229,34 @@ void Link::process(const ProcessArgs& args)
 
     lights[SYNC_LIGHT].setBrightness(m_synced ? 0.0 : 1.0);
 }
+
+// -------------------------------------------------------------
+
+void Link::attachModule()
+{
+    if ((++g_instances == 1) && (g_link == nullptr))
+    {
+        g_link = new ableton::Link(120.0);
+
+        g_link->enable(true);
+    }
+}
+
+void Link::detachModule()
+{
+    if ((--g_instances == 0) && (g_link != nullptr))
+    {
+        g_link->enable(false);
+
+        delete g_link;
+        g_link = nullptr;
+    }
+}
+
+ableton::Link* Link::g_link = nullptr;
+std::atomic<int> Link::g_instances(0);
+
+// -------------------------------------------------------------
 
 struct LinkWidget : ModuleWidget
 {
