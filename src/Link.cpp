@@ -94,11 +94,19 @@ public:
 
     void process(const ProcessArgs& args) override;
 
+	json_t* dataToJson() override;
+	void dataFromJson(json_t*) override;
+
+    bool startStopEnabled();
+    void setStartStopEnabled(bool value);
+
 private:
     void clampTick(int& tick, int maxTicks);
 
     int m_lastTick = -1;
     bool m_synced = false;
+    bool m_lastPlayingState = false;
+    bool m_startStopEnabled = false;
 
     // Handling a single instance of ableton::Link
     // also for multiple instances of Link module
@@ -145,7 +153,17 @@ void Link::process(const ProcessArgs& args)
 
         if (g_link->isStartStopSyncEnabled())
         {
-            playing = timeline.isPlaying();
+            if (m_startStopEnabled)
+            {
+                playing = timeline.isPlaying();
+
+                if (playing && !m_lastPlayingState)
+                {
+                    m_synced = false;
+                }
+            }
+
+            m_lastPlayingState = playing;
         }
     }
 
@@ -230,6 +248,37 @@ void Link::process(const ProcessArgs& args)
     lights[SYNC_LIGHT].setBrightness(m_synced ? 0.0 : 1.0);
 }
 
+json_t* Link::dataToJson()
+{
+	json_t* root = json_object();
+
+	// Enable Start/Stop
+    json_object_set_new(root, "enable_start_stop", json_boolean(startStopEnabled()));
+
+	return root;
+}
+
+void Link::dataFromJson(json_t* root)
+{
+	// Enable Start/Stop
+    json_t* enable_start_stop = json_object_get(root, "enable_start_stop");
+
+    if (enable_start_stop)
+	{
+		setStartStopEnabled(json_boolean_value(enable_start_stop));
+	}
+}
+
+bool Link::startStopEnabled()
+{
+    return m_startStopEnabled;
+}
+
+void Link::setStartStopEnabled(bool value)
+{
+    m_startStopEnabled = value;
+}
+
 // -------------------------------------------------------------
 
 void Link::attachModule()
@@ -239,6 +288,7 @@ void Link::attachModule()
         g_link = new ableton::Link(120.0);
 
         g_link->enable(true);
+        g_link->enableStartStopSync(true);
     }
 }
 
@@ -247,6 +297,7 @@ void Link::detachModule()
     if ((--g_instances == 0) && (g_link != nullptr))
     {
         g_link->enable(false);
+        g_link->enableStartStopSync(false);
 
         delete g_link;
         g_link = nullptr;
@@ -258,9 +309,27 @@ std::atomic<int> Link::g_instances(0);
 
 // -------------------------------------------------------------
 
+struct LinkStartStopMenuItem : rack::MenuItem
+{
+	Link* module;
+
+    void onAction(const rack::event::Action&) override
+    {
+        const bool enable = module->startStopEnabled();
+        module->setStartStopEnabled(!enable);
+    }
+
+    void step() override
+    {
+        rightText = (module->startStopEnabled() ? "✔" : "");
+        rack::MenuItem::step();
+    }
+};
+
 struct LinkWidget : ModuleWidget
 {
     LinkWidget(Link*);
+    void appendContextMenu(rack::ui::Menu*) override;
 };
 
 LinkWidget::LinkWidget(Link* module)
@@ -288,6 +357,14 @@ LinkWidget::LinkWidget(Link* module)
     addChild(createLight<SmallLight<BlueLight>>(Vec(27.5, 297.5), module, Link::CLOCK_LIGHT_4TH));
     addChild(createLight<SmallLight<YellowLight>>(Vec(27.5, 333.4), module, Link::RESET_LIGHT));
     addChild(createLight<SmallLight<BlueLight>>(Vec(27, 217), module, Link::SYNC_LIGHT));
+}
+
+void LinkWidget::appendContextMenu(rack::ui::Menu* menu)
+{
+	Link* module = dynamic_cast<Link*>(this->module);
+
+	menu->addChild(construct<MenuSeparator>());
+	menu->addChild(construct<LinkStartStopMenuItem>(&LinkStartStopMenuItem::text, "Enable Link Start/Stop", &LinkStartStopMenuItem::module, module));
 }
 
 Model *modelLink = createModel<Link, LinkWidget>("Link");
