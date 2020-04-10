@@ -16,6 +16,11 @@
 			"slug": "Link",
 			"name": "Link",
 			"tags": ["Clock"]
+		},
+		{
+			"slug": "Link2",
+			"name": "Link v2",
+			"tags": ["Clock"]
 		}
 	]
 }

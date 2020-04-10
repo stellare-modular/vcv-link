@@ -22,8 +22,6 @@
 
 #include "rack.hpp"
 
-using namespace rack;
-
-extern Model* modelLink;
-extern Plugin* pluginInstance;
+extern rack::Model* modelLink2;
+extern rack::Plugin* pluginInstance;
 

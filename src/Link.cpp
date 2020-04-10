@@ -1,7 +1,7 @@
 /*
 
  VCV-Link by Stellare Modular
- Copyright (C) 2017-2018 - Vincenzo Pietropaolo, Sander Baan
+ Copyright (C) 2017-2020 - Vincenzo Pietropaolo, Sander Baan
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 */
 
 #include "Link.hpp"
+#include "UIWidgets.hpp"
 
 // Macros named "defer", "debug" and "info" are defined both in Rack and ASIO
 // standalone headers, here we undefine the Rack definitions which stay unused.
@@ -128,7 +129,7 @@ void Link::process(const ProcessArgs& args)
     if (m_link)
     {
         const auto time = m_link->clock().micros();
-        const auto timeline = m_link->captureAppTimeline();
+        const auto timeline = m_link->captureAppSessionState();
         phase = timeline.phaseAtTime(time, beats_per_bar);
     }
 

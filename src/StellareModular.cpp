@@ -19,6 +19,7 @@
 */
 
 #include "Link.hpp"
+#include "Link2.hpp"
 
 Plugin* pluginInstance;
 
@@ -26,4 +27,5 @@ void init(rack::Plugin* p)
 {
     pluginInstance = p;
     p->addModel(modelLink);
+    p->addModel(modelLink2);
 }
