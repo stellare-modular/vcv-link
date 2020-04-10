@@ -19,27 +19,8 @@
 */
 
 #include "Link2.hpp"
+#include "LinkPeer.hpp"
 #include "UIWidgets.hpp"
-
-// Macros named "defer", "debug" and "info" are defined both in Rack and ASIO
-// standalone headers, here we undefine the Rack definitions which stay unused.
-#undef defer
-#undef debug
-#undef info
-
-#if LINK_PLATFORM_WINDOWS
-#include <stdint.h>
-#include <stdlib.h>
-#define htonll(x) _byteswap_uint64(x)
-#define ntohll(x) _byteswap_uint64(x)
-#endif
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#include <ableton/Link.hpp>
-#pragma GCC diagnostic pop
-
-#include <atomic>
 
 struct Link2 : Module
 {
@@ -85,12 +66,12 @@ public:
         configParam(RATIO_PARAM, 0.0, 4.0, 2.0);
         configParam(OFFSET_PARAM, -1.0, 1.0, 0.0);
 
-        attachModule();
+        LinkPeer::attachModule();
     }
 
     ~Link2()
     {
-        detachModule();
+        LinkPeer::detachModule();
     }
 
     void process(const ProcessArgs& args) override;
@@ -108,15 +89,6 @@ private:
     bool m_synced = false;
     bool m_lastPlayingState = false;
     bool m_startStopEnabled = false;
-
-    // Handling a single instance of ableton::Link
-    // also for multiple instances of Link2 module
-
-    static void attachModule();
-    static void detachModule();
-
-    static ableton::Link* g_link;
-    static std::atomic<int> g_instances;
 };
 
 void Link2::clampTick(int& tick, int maxTicks)
@@ -144,15 +116,17 @@ void Link2::process(const ProcessArgs& args)
     double phase = 0.0;
     bool playing = true;
 
-    if (g_link)
+    auto linkPeer = LinkPeer::get();
+
+    if (linkPeer)
     {
-        const auto time = g_link->clock().micros();
-        const auto timeline = g_link->captureAppSessionState();
+        const auto time = linkPeer->clock().micros();
+        const auto timeline = linkPeer->captureAppSessionState();
 
         tempo = timeline.tempo();
         phase = timeline.phaseAtTime(time, beats_per_bar);
 
-        if (g_link->isStartStopSyncEnabled())
+        if (linkPeer->isStartStopSyncEnabled())
         {
             if (m_startStopEnabled)
             {
@@ -279,34 +253,6 @@ void Link2::setStartStopEnabled(bool value)
 {
     m_startStopEnabled = value;
 }
-
-// -------------------------------------------------------------
-
-void Link2::attachModule()
-{
-    if ((++g_instances == 1) && (g_link == nullptr))
-    {
-        g_link = new ableton::Link(120.0);
-
-        g_link->enable(true);
-        g_link->enableStartStopSync(true);
-    }
-}
-
-void Link2::detachModule()
-{
-    if ((--g_instances == 0) && (g_link != nullptr))
-    {
-        g_link->enable(false);
-        g_link->enableStartStopSync(false);
-
-        delete g_link;
-        g_link = nullptr;
-    }
-}
-
-ableton::Link* Link2::g_link = nullptr;
-std::atomic<int> Link2::g_instances(0);
 
 // -------------------------------------------------------------
 

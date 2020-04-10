@@ -19,25 +19,8 @@
 */
 
 #include "Link.hpp"
+#include "LinkPeer.hpp"
 #include "UIWidgets.hpp"
-
-// Macros named "defer", "debug" and "info" are defined both in Rack and ASIO
-// standalone headers, here we undefine the Rack definitions which stay unused.
-#undef defer
-#undef debug
-#undef info
-
-#if LINK_PLATFORM_WINDOWS
-#include <stdint.h>
-#include <stdlib.h>
-#define htonll(x) _byteswap_uint64(x)
-#define ntohll(x) _byteswap_uint64(x)
-#endif
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#include <ableton/Link.hpp>
-#pragma GCC diagnostic pop
 
 struct Link : Module
 {
@@ -80,17 +63,12 @@ public:
         configParam(SWING_PARAM, 0.0, 1.0, 0.0);
         configParam(OFFSET_PARAM, -1.0, 1.0, 0.0);
 
-        m_link = new ableton::Link(120.0);
-        m_link->enable(true);
+        LinkPeer::attachModule();
     }
 
     ~Link()
     {
-        if (m_link)
-        {
-            m_link->enable(false);
-            delete m_link;
-        }
+        LinkPeer::detachModule();
     }
 
     void process(const ProcessArgs& args) override;
@@ -98,7 +76,6 @@ public:
 private:
     void clampTick(int& tick, int maxTicks);
 
-    ableton::Link* m_link;
     int m_lastTick = -1;
     bool m_synced = false;
 };
@@ -126,10 +103,12 @@ void Link::process(const ProcessArgs& args)
 
     double phase = 0.0;
 
-    if (m_link)
+    auto linkPeer = LinkPeer::get();
+
+    if (linkPeer)
     {
-        const auto time = m_link->clock().micros();
-        const auto timeline = m_link->captureAppSessionState();
+        const auto time = linkPeer->clock().micros();
+        const auto timeline = linkPeer->captureAppSessionState();
         phase = timeline.phaseAtTime(time, beats_per_bar);
     }
 
