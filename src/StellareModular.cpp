@@ -1,7 +1,7 @@
 /*
 
  VCV-Link by Stellare Modular
- Copyright (C) 2017-2018 - Vincenzo Pietropaolo, Sander Baan
+ Copyright (C) 2017-2020 - Vincenzo Pietropaolo, Sander Baan
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 */
 
 #include "Link.hpp"
+#include "Link2.hpp"
 
 Plugin* pluginInstance;
 
@@ -26,4 +27,5 @@ void init(rack::Plugin* p)
 {
     pluginInstance = p;
     p->addModel(modelLink);
+    p->addModel(modelLink2);
 }
