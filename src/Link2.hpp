@@ -24,6 +24,6 @@
 
 using namespace rack;
 
-extern Model* modelLink;
+extern Model* modelLink2;
 extern Plugin* pluginInstance;
 

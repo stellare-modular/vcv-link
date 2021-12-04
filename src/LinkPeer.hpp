@@ -20,10 +20,32 @@
 
 #pragma once
 
-#include "rack.hpp"
+// Macros named "defer", "debug" and "info" are defined both in Rack and ASIO
+// standalone headers, here we undefine the Rack definitions which stay unused.
+#undef defer
+#undef debug
+#undef info
 
-using namespace rack;
+#if LINK_PLATFORM_WINDOWS
+#include <stdint.h>
+#include <stdlib.h>
+#define htonll(x) _byteswap_uint64(x)
+#define ntohll(x) _byteswap_uint64(x)
+#endif
 
-extern Model* modelLink;
-extern Plugin* pluginInstance;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-override"
+#include <ableton/Link.hpp>
+#pragma GCC diagnostic pop
 
+// Handling a single instance of ableton::Link
+// for all instancess of Link and Link2 modules
+
+namespace LinkPeer {
+
+    ableton::Link* get();
+
+    void attachModule();
+    void detachModule();
+
+} // namespace LinkPeer
