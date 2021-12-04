@@ -20,21 +20,10 @@
 
 #include "Link.hpp"
 
-Plugin* plugin;
+Plugin* pluginInstance;
 
 void init(rack::Plugin* p)
 {
-#ifndef SLUG
-    static_assert(false, "SLUG must be defined!");
-#endif
-
-#ifndef VERSION
-    static_assert(false, "VERSION must be defined!");
-#endif
-
-    plugin = p;
-    p->slug = TOSTRING(SLUG);
-    p->version = TOSTRING(VERSION);
-
+    pluginInstance = p;
     p->addModel(modelLink);
 }

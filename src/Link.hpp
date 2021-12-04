@@ -22,30 +22,48 @@
 
 using namespace rack;
 
-extern Plugin* plugin;
+extern Plugin* pluginInstance;
 extern Model* modelLink;
 
-struct BlueSmallButton : SVGSwitch, MomentarySwitch
+struct StellarePushButton : SvgSwitch
 {
-    BlueSmallButton()
+    StellarePushButton()
     {
-        addFrame(SVG::load(assetPlugin(plugin, "res/BlueSmallButton_0.svg")));
-        addFrame(SVG::load(assetPlugin(plugin, "res/BlueSmallButton_1.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Button.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Button_push.svg")));
 
         sw->wrap();
+        momentary = true;
         box.size = sw->box.size;
     }
 };
 
-struct KnobSimpleWhite : SVGKnob
+struct StellareKnob01 : SvgKnob
 {
-    KnobSimpleWhite()
+    StellareKnob01()
     {
         box.size = Vec(28, 28);
         minAngle = -0.82 * M_PI;
         maxAngle = 0.82 * M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/KnobSimpleWhite.svg")));
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Knob_M.svg")));
         shadow->opacity = 0.f;
+    }
+};
+
+struct StellareJack : SvgPort
+{
+    StellareJack()
+    {
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Jack.svg")));
+        shadow->opacity = 0.f;
+    }
+};
+
+struct StellareScrew : SvgScrew
+{
+    StellareScrew()
+    {
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/stellare_Screw.svg")));
     }
 };

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="21px"
+	 height="21px" viewBox="0 0 21 21" enable-background="new 0 0 21 21" xml:space="preserve">
+<g id="background">
+</g>
+<g id="FUN">
+</g>
+<g id="PRINT">
+</g>
+<g id="JACKS">
+</g>
+<g id="LED_PUSH">
+</g>
+<g id="SCREENS">
+</g>
+<g id="KNOBS_N_BUTTONS">
+	<g>
+		<g>
+			<g>
+				<circle fill="#5B5B5B" cx="10.5" cy="10.5" r="9.5"/>
+				<path fill="#1C1C1C" d="M10.5,2c4.68692,0,8.5,3.81308,8.5,8.5S15.18692,19,10.5,19S2,15.18692,2,10.5S5.81308,2,10.5,2 M10.5,0
+					C4.70101,0,0,4.70101,0,10.5S4.70101,21,10.5,21S21,16.29899,21,10.5S16.29899,0,10.5,0L10.5,0z"/>
+			</g>
+			<g>
+				<circle cx="10.5" cy="10.5" r="10.5"/>
+			</g>
+			<circle fill="#F9F8F7" stroke="#AFACA7" stroke-width="0.5" stroke-miterlimit="10" cx="10.5" cy="10.5" r="8.42796"/>
+			<circle fill="#666666" stroke="#AFACA7" stroke-width="0.5" stroke-miterlimit="10" cx="10.5" cy="10.5" r="3.19539"/>
+		</g>
+	</g>
+</g>
+</svg>
